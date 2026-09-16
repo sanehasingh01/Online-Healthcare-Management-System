@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | MedCare</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #dbeafe, #ede9fe);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 950px;
+            display: flex;
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(30, 64, 175, 0.2);
+            animation: appear 0.8s ease;
+        }
+
+        .left {
+            width: 45%;
+            padding: 50px 35px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .logo {
+            font-size: 27px;
+            font-weight: bold;
+            margin-bottom: 35px;
+        }
+
+        .medical-icon {
+            font-size: 75px;
+            margin-bottom: 25px;
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .left h1 {
+            font-size: 36px;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .left p {
+            font-size: 14px;
+            line-height: 1.8;
+            opacity: 0.9;
+        }
+
+        .right {
+            width: 55%;
+            padding: 50px;
+        }
+
+        .right h2 {
+            font-size: 30px;
+            color: #0f172a;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #64748b;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .role-buttons {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 12px 5px;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            background: #f8fafc;
+            color: #475569;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+
+        .role-btn.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #334155;
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 20px;
+            border: 1px solid #dbeafe;
+            border-radius: 10px;
+            outline: none;
+            font-size: 14px;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px #dbeafe;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .message {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #2563eb;
+            text-align: center;
+            line-height: 1.5;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+            color: #64748b;
+            font-size: 13px;
+            text-decoration: none;
+        }
+
+        .back:hover {
+            color: #2563eb;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-12px);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                flex-direction: column;
+            }
+
+            .left,
+            .right {
+                width: 100%;
+            }
+
+            .left {
+                padding: 35px;
+                text-align: center;
+            }
+
+            .left h1 {
+                font-size: 30px;
+            }
+
+            .right {
+                padding: 35px 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="left">
+            <div class="logo">✚ MedCare</div>
+
+            <div class="medical-icon">🩺</div>
+
+            <h1>Your Health.<br>Our Priority.</h1>
+
+            <p>
+                Welcome to MedCare, your online healthcare
+                management platform. Manage appointments,
+                doctors, and healthcare services with ease.
+            </p>
+        </div>
+
+        <div class="right">
+
+            <h2>Welcome Back!</h2>
+
+            <p class="subtitle">
+                Login to your healthcare dashboard
+            </p>
+
+            <div class="role-buttons">
+
+                <button class="role-btn active"
+                    onclick="selectRole('Patient', this)">
+                    Patient
+                </button>
+
+                <button class="role-btn"
+                    onclick="selectRole('Doctor', this)">
+                    Doctor
+                </button>
+
+                <button class="role-btn"
+                    onclick="selectRole('Admin', this)">
+                    Admin
+                </button>
+
+            </div>
+
+            <form onsubmit="login(event)">
+
+                <label>Email Address</label>
+
+                <input
+                    type="email"
+                    id="email"
+                    placeholder="Enter your email"
+                    required
+                >
+
+                <label>Password</label>
+
+                <input
+                    type="password"
+                    id="password"
+                    placeholder="Enter your password"
+                    required
+                >
+
+                <button type="submit" class="login-btn">
+                    Login →
+                </button>
+
+            </form>
+
+            <div class="message" id="message"></div>
+
+            <a href="index.html" class="back">
+                ← Back to Homepage
+            </a>
+
+        </div>
+
+    </div>
+
+    <script>
+
+        let selectedRole = "Patient";
+
+        function selectRole(role, button) {
+
+            selectedRole = role;
+
+            document.querySelectorAll(".role-btn")
+                .forEach(btn => btn.classList.remove("active"));
+
+            button.classList.add("active");
+
+            document.getElementById("message").textContent =
+                "Selected role: " + role;
+
+        }
+
+        function login(event) {
+
+            event.preventDefault();
+
+            const email = document.getElementById("email").value;
+
+            document.getElementById("message").textContent =
+                "Demo login selected for " + selectedRole +
+                ". Backend connection will be added next.";
+
+        }
+
+    </script>
+
+</body>
+</html>
