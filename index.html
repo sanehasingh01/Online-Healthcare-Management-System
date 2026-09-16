@@ -1,0 +1,1312 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MedCare | Online Healthcare Management</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+
+            font-family: 'Inter', sans-serif;
+
+            background: #f7faff;
+
+            color: #172554;
+
+            overflow-x: hidden;
+
+        }
+
+        /* NAVBAR */
+
+        header {
+
+            width: 100%;
+
+            padding: 22px 7%;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            position: relative;
+
+            z-index: 10;
+
+            background: rgba(255,255,255,0.85);
+
+            backdrop-filter: blur(15px);
+
+            border-bottom: 1px solid #e5e7eb;
+
+        }
+
+        .logo {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            font-size: 23px;
+
+            font-weight: 800;
+
+            color: #2563eb;
+
+        }
+
+        .logo span {
+
+            color: #0f172a;
+
+        }
+
+        .logo-icon {
+
+            width: 42px;
+
+            height: 42px;
+
+            background: linear-gradient(135deg,#2563eb,#7c3aed);
+
+            color: white;
+
+            border-radius: 13px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 23px;
+
+            box-shadow: 0 8px 20px rgba(37,99,235,0.25);
+
+        }
+
+        nav {
+
+            display: flex;
+
+            gap: 30px;
+
+            align-items: center;
+
+        }
+
+        nav a {
+
+            text-decoration: none;
+
+            color: #475569;
+
+            font-size: 14px;
+
+            font-weight: 600;
+
+            transition: 0.3s;
+
+        }
+
+        nav a:hover {
+
+            color: #2563eb;
+
+        }
+
+        .nav-btn {
+
+            background: #2563eb;
+
+            color: white !important;
+
+            padding: 12px 20px;
+
+            border-radius: 10px;
+
+            box-shadow: 0 5px 15px rgba(37,99,235,0.25);
+
+        }
+
+        .nav-btn:hover {
+
+            transform: translateY(-2px);
+
+            background: #1d4ed8;
+
+        }
+
+        /* HERO */
+
+        .hero {
+
+            min-height: 650px;
+
+            padding: 90px 7%;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .hero-content {
+
+            max-width: 600px;
+
+            z-index: 2;
+
+            animation: fadeUp 1s ease;
+
+        }
+
+        .badge {
+
+            display: inline-block;
+
+            padding: 9px 15px;
+
+            background: #e0eaff;
+
+            color: #2563eb;
+
+            border-radius: 30px;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            margin-bottom: 25px;
+
+        }
+
+        .hero h1 {
+
+            font-size: clamp(38px,5vw,68px);
+
+            line-height: 1.12;
+
+            font-weight: 800;
+
+            letter-spacing: -2px;
+
+            color: #0f172a;
+
+        }
+
+        .hero h1 span {
+
+            color: #2563eb;
+
+        }
+
+        .hero p {
+
+            margin-top: 25px;
+
+            font-size: 16px;
+
+            line-height: 1.8;
+
+            color: #64748b;
+
+            max-width: 490px;
+
+        }
+
+        .hero-buttons {
+
+            margin-top: 35px;
+
+            display: flex;
+
+            gap: 15px;
+
+            flex-wrap: wrap;
+
+        }
+
+        .primary-btn {
+
+            background: linear-gradient(135deg,#2563eb,#4f46e5);
+
+            color: white;
+
+            padding: 16px 25px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            box-shadow: 0 10px 25px rgba(37,99,235,0.25);
+
+            transition: 0.3s;
+
+        }
+
+        .primary-btn:hover {
+
+            transform: translateY(-4px);
+
+            box-shadow: 0 15px 30px rgba(37,99,235,0.35);
+
+        }
+
+        .secondary-btn {
+
+            background: white;
+
+            color: #2563eb;
+
+            border: 1px solid #dbeafe;
+
+            padding: 16px 25px;
+
+            border-radius: 12px;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+            font-weight: 700;
+
+            transition: 0.3s;
+
+        }
+
+        .secondary-btn:hover {
+
+            transform: translateY(-4px);
+
+            background: #eff6ff;
+
+        }
+
+        /* HERO VISUAL */
+
+        .hero-visual {
+
+            position: relative;
+
+            width: 440px;
+
+            height: 440px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            animation: float 5s ease-in-out infinite;
+
+        }
+
+        .circle-bg {
+
+            position: absolute;
+
+            width: 390px;
+
+            height: 390px;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg,#dbeafe,#ede9fe);
+
+        }
+
+        .doctor-card {
+
+            position: relative;
+
+            width: 330px;
+
+            background: rgba(255,255,255,0.9);
+
+            backdrop-filter: blur(20px);
+
+            padding: 30px;
+
+            border-radius: 25px;
+
+            box-shadow: 0 25px 70px rgba(30,64,175,0.18);
+
+            text-align: center;
+
+            z-index: 2;
+
+            border: 1px solid rgba(255,255,255,0.8);
+
+        }
+
+        .doctor-avatar {
+
+            width: 105px;
+
+            height: 105px;
+
+            margin: auto;
+
+            border-radius: 50%;
+
+            background: linear-gradient(135deg,#bfdbfe,#ddd6fe);
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 58px;
+
+        }
+
+        .doctor-card h3 {
+
+            margin-top: 18px;
+
+            font-size: 20px;
+
+            color: #0f172a;
+
+        }
+
+        .doctor-card p {
+
+            margin-top: 8px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+        }
+
+        .online {
+
+            display: inline-block;
+
+            margin-top: 15px;
+
+            padding: 7px 14px;
+
+            border-radius: 30px;
+
+            background: #dcfce7;
+
+            color: #15803d;
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+        }
+
+        .appointment-mini {
+
+            margin-top: 20px;
+
+            background: #eff6ff;
+
+            padding: 15px;
+
+            border-radius: 12px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            font-size: 12px;
+
+            color: #2563eb;
+
+            font-weight: 700;
+
+        }
+
+        /* FLOATING ELEMENTS */
+
+        .floating-card {
+
+            position: absolute;
+
+            background: white;
+
+            padding: 15px 20px;
+
+            border-radius: 15px;
+
+            box-shadow: 0 15px 35px rgba(15,23,42,0.12);
+
+            font-size: 12px;
+
+            font-weight: 700;
+
+            z-index: 4;
+
+            animation: floatSmall 4s ease-in-out infinite;
+
+        }
+
+        .floating-card.one {
+
+            top: 40px;
+
+            right: -15px;
+
+            color: #2563eb;
+
+        }
+
+        .floating-card.two {
+
+            bottom: 45px;
+
+            left: -25px;
+
+            color: #7c3aed;
+
+            animation-delay: 1s;
+
+        }
+
+        /* STATS */
+
+        .stats {
+
+            display: flex;
+
+            justify-content: center;
+
+            gap: 70px;
+
+            padding: 35px 7%;
+
+            background: white;
+
+            border-top: 1px solid #e5e7eb;
+
+            border-bottom: 1px solid #e5e7eb;
+
+            flex-wrap: wrap;
+
+        }
+
+        .stat {
+
+            text-align: center;
+
+        }
+
+        .stat h2 {
+
+            color: #2563eb;
+
+            font-size: 28px;
+
+        }
+
+        .stat p {
+
+            margin-top: 6px;
+
+            color: #64748b;
+
+            font-size: 13px;
+
+        }
+
+        /* SERVICES */
+
+        .services {
+
+            padding: 100px 7%;
+
+            text-align: center;
+
+        }
+
+        .section-tag {
+
+            color: #2563eb;
+
+            font-size: 13px;
+
+            font-weight: 800;
+
+            letter-spacing: 2px;
+
+            text-transform: uppercase;
+
+        }
+
+        .services h2 {
+
+            margin-top: 15px;
+
+            font-size: 38px;
+
+            color: #0f172a;
+
+        }
+
+        .section-description {
+
+            margin: 18px auto 45px;
+
+            color: #64748b;
+
+            max-width: 500px;
+
+            line-height: 1.7;
+
+            font-size: 14px;
+
+        }
+
+        .service-grid {
+
+            display: grid;
+
+            grid-template-columns: repeat(3,1fr);
+
+            gap: 25px;
+
+            max-width: 1100px;
+
+            margin: auto;
+
+        }
+
+        .service-card {
+
+            background: white;
+
+            padding: 35px 25px;
+
+            border-radius: 20px;
+
+            border: 1px solid #e5e7eb;
+
+            text-align: left;
+
+            transition: 0.35s;
+
+        }
+
+        .service-card:hover {
+
+            transform: translateY(-10px);
+
+            box-shadow: 0 20px 45px rgba(37,99,235,0.12);
+
+            border-color: #bfdbfe;
+
+        }
+
+        .service-icon {
+
+            width: 58px;
+
+            height: 58px;
+
+            border-radius: 16px;
+
+            background: #eff6ff;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            font-size: 28px;
+
+            margin-bottom: 22px;
+
+        }
+
+        .service-card h3 {
+
+            color: #0f172a;
+
+            font-size: 19px;
+
+            margin-bottom: 12px;
+
+        }
+
+        .service-card p {
+
+            color: #64748b;
+
+            font-size: 14px;
+
+            line-height: 1.7;
+
+        }
+
+        .service-link {
+
+            display: inline-block;
+
+            margin-top: 22px;
+
+            color: #2563eb;
+
+            font-size: 13px;
+
+            font-weight: 700;
+
+        }
+
+        /* CTA */
+
+        .cta {
+
+            margin: 20px 7% 90px;
+
+            padding: 60px 30px;
+
+            border-radius: 25px;
+
+            background: linear-gradient(135deg,#1d4ed8,#6d28d9);
+
+            text-align: center;
+
+            color: white;
+
+            position: relative;
+
+            overflow: hidden;
+
+        }
+
+        .cta h2 {
+
+            font-size: 35px;
+
+            margin-bottom: 15px;
+
+        }
+
+        .cta p {
+
+            font-size: 14px;
+
+            opacity: 0.85;
+
+            margin-bottom: 30px;
+
+        }
+
+        .cta a {
+
+            display: inline-block;
+
+            padding: 15px 28px;
+
+            background: white;
+
+            color: #2563eb;
+
+            border-radius: 10px;
+
+            text-decoration: none;
+
+            font-weight: 700;
+
+            font-size: 14px;
+
+            transition: 0.3s;
+
+        }
+
+        .cta a:hover {
+
+            transform: scale(1.05);
+
+        }
+
+        /* FOOTER */
+
+        footer {
+
+            background: #0f172a;
+
+            color: white;
+
+            padding: 45px 7%;
+
+            text-align: center;
+
+        }
+
+        footer h3 {
+
+            font-size: 22px;
+
+            margin-bottom: 12px;
+
+        }
+
+        footer p {
+
+            color: #94a3b8;
+
+            font-size: 13px;
+
+        }
+
+        .footer-bottom {
+
+            margin-top: 25px;
+
+            padding-top: 20px;
+
+            border-top: 1px solid #334155;
+
+            font-size: 12px;
+
+            color: #64748b;
+
+        }
+
+        /* ANIMATIONS */
+
+        @keyframes fadeUp {
+
+            from {
+
+                opacity: 0;
+
+                transform: translateY(30px);
+
+            }
+
+            to {
+
+                opacity: 1;
+
+                transform: translateY(0);
+
+            }
+
+        }
+
+        @keyframes float {
+
+            0%,100% {
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                transform: translateY(-15px);
+
+            }
+
+        }
+
+        @keyframes floatSmall {
+
+            0%,100% {
+
+                transform: translateY(0);
+
+            }
+
+            50% {
+
+                transform: translateY(-12px);
+
+            }
+
+        }
+
+        /* RESPONSIVE */
+
+        @media(max-width:900px) {
+
+            .hero {
+
+                flex-direction: column;
+
+                text-align: center;
+
+                gap: 50px;
+
+                padding-top: 60px;
+
+            }
+
+            .hero-content {
+
+                max-width: 650px;
+
+            }
+
+            .hero p {
+
+                margin-left: auto;
+
+                margin-right: auto;
+
+            }
+
+            .hero-buttons {
+
+                justify-content: center;
+
+            }
+
+            .service-grid {
+
+                grid-template-columns: repeat(2,1fr);
+
+            }
+
+            .hero-visual {
+
+                width: 100%;
+
+                max-width: 440px;
+
+            }
+
+        }
+
+        @media(max-width:600px) {
+
+            header {
+
+                padding: 18px 5%;
+
+            }
+
+            nav {
+
+                gap: 12px;
+
+            }
+
+            nav a:not(.nav-btn) {
+
+                display: none;
+
+            }
+
+            .hero {
+
+                padding: 60px 5%;
+
+            }
+
+            .hero h1 {
+
+                font-size: 40px;
+
+            }
+
+            .hero-visual {
+
+                transform: scale(0.8);
+
+                margin: -40px 0;
+
+            }
+
+            .service-grid {
+
+                grid-template-columns: 1fr;
+
+            }
+
+            .services {
+
+                padding: 70px 5%;
+
+            }
+
+            .services h2 {
+
+                font-size: 30px;
+
+            }
+
+            .stats {
+
+                gap: 30px;
+
+            }
+
+            .cta {
+
+                margin: 10px 5% 60px;
+
+            }
+
+            .cta h2 {
+
+                font-size: 28px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+
+<!-- NAVBAR -->
+
+<header>
+
+    <div class="logo">
+
+        <div class="logo-icon">✚</div>
+
+        <div>Med<span>Care</span></div>
+
+    </div>
+
+    <nav>
+
+        <a href="#">Home</a>
+
+        <a href="#services">Services</a>
+
+        <a href="#about">About</a>
+
+        <a href="#contact">Contact</a>
+
+        <a href="#login" class="nav-btn">Get Started →</a>
+
+    </nav>
+
+</header>
+
+
+<!-- HERO SECTION -->
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <div class="badge">
+
+            ✦ SMART HEALTHCARE MANAGEMENT
+
+        </div>
+
+        <h1>
+
+            Your Health.<br>
+
+            Our <span>Priority.</span>
+
+        </h1>
+
+        <p>
+
+            Experience smarter healthcare management with easy appointment booking, organized medical records, and seamless communication between patients and doctors.
+
+        </p>
+
+        <div class="hero-buttons">
+
+            <a href="#login" class="primary-btn">
+
+                Get Started →
+
+            </a>
+
+            <a href="#services" class="secondary-btn">
+
+                Explore Services
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- HERO VISUAL -->
+
+    <div class="hero-visual">
+
+        <div class="circle-bg"></div>
+
+        <div class="floating-card one">
+
+            ✓ Easy Appointments
+
+        </div>
+
+        <div class="floating-card two">
+
+            ♡ Patient Care
+
+        </div>
+
+        <div class="doctor-card">
+
+            <div class="doctor-avatar">
+
+                👨‍⚕️
+
+            </div>
+
+            <h3>Healthcare Made Simple</h3>
+
+            <p>Connect with doctors and manage your healthcare.</p>
+
+            <div class="online">
+
+                ● System Available
+
+            </div>
+
+            <div class="appointment-mini">
+
+                <span>📅 Appointments</span>
+
+                <span>Manage →</span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- STATS -->
+
+<section class="stats">
+
+    <div class="stat">
+
+        <h2>24/7</h2>
+
+        <p>Easy Access</p>
+
+    </div>
+
+    <div class="stat">
+
+        <h2>3+</h2>
+
+        <p>User Roles</p>
+
+    </div>
+
+    <div class="stat">
+
+        <h2>100%</h2>
+
+        <p>Digital Management</p>
+
+    </div>
+
+    <div class="stat">
+
+        <h2>1</h2>
+
+        <p>Smart Platform</p>
+
+    </div>
+
+</section>
+
+
+<!-- SERVICES -->
+
+<section class="services" id="services">
+
+    <div class="section-tag">
+
+        OUR SERVICES
+
+    </div>
+
+    <h2>Everything You Need</h2>
+
+    <p class="section-description">
+
+        A complete healthcare management platform designed to make medical services simpler, faster, and more accessible.
+
+    </p>
+
+
+    <div class="service-grid">
+
+
+        <div class="service-card">
+
+            <div class="service-icon">📅</div>
+
+            <h3>Appointment Booking</h3>
+
+            <p>
+
+                Book and manage doctor appointments easily through our digital platform.
+
+            </p>
+
+            <span class="service-link">Learn More →</span>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-icon">👨‍⚕️</div>
+
+            <h3>Doctor Dashboard</h3>
+
+            <p>
+
+                Doctors can manage schedules, appointments, and patient information.
+
+            </p>
+
+            <span class="service-link">Learn More →</span>
+
+        </div>
+
+
+        <div class="service-card">
+
+            <div class="service-icon">🩺</div>
+
+            <h3>Patient Records</h3>
+
+            <p>
+
+                Keep healthcare information organized and accessible in one place.
+
+            </p>
+
+            <span class="service-link">Learn More →</span>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+<!-- ABOUT -->
+
+<section class="services" id="about">
+
+    <div class="section-tag">
+
+        ABOUT OUR SYSTEM
+
+    </div>
+
+    <h2>Modern Healthcare Management</h2>
+
+    <p class="section-description">
+
+        Our Online Healthcare Management System is developed using Java, HTML, and CSS to provide a simple and organized platform for patients, doctors, and administrators.
+
+    </p>
+
+</section>
+
+
+<!-- CTA -->
+
+<section class="cta" id="login">
+
+    <h2>Ready to Manage Healthcare Smarter?</h2>
+
+    <p>
+
+        Start exploring our healthcare management platform today.
+
+    </p>
+
+    <a href="#services">
+
+        Explore Platform →
+
+    </a>
+
+</section>
+
+
+<!-- FOOTER -->
+
+<footer id="contact">
+
+    <h3>✚ MedCare</h3>
+
+    <p>
+
+        Online Healthcare Management System
+
+    </p>
+
+    <div class="footer-bottom">
+
+        © 2026 MedCare. Developed using Java, HTML & CSS.
+
+    </div>
+
+</footer>
+
+
+</body>
+
+</html>
