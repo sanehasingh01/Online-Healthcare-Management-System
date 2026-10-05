@@ -77,7 +77,7 @@ The project contains Java DAO classes,
 Servlets, HTML pages, CSS and SQL database scripts.
 
 ## 👩‍💻 Project Team
-Saneha singh
-Anshul kumar
-Ankit kumar
-Prashant jaiswal
+Saneha singh,
+Anshul kumar,
+Ankit kumar,
+Prashant jaiswal.
