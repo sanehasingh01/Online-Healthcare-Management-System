@@ -1,0 +1,716 @@
+/* =========================================================
+   MEDICARE - ONLINE HEALTHCARE MANAGEMENT SYSTEM
+   Modern Premium Healthcare UI
+   ========================================================= */
+
+/* ---------- GOOGLE FONT ---------- */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
+
+/* ---------- ROOT VARIABLES ---------- */
+
+:root {
+    --primary: #087ea4;
+    --primary-dark: #075985;
+    --secondary: #06b6d4;
+    --accent: #14b8a6;
+
+    --text: #123047;
+    --muted: #6b8194;
+
+    --white: #ffffff;
+    --background: #f4fbfd;
+
+    --border: rgba(255, 255, 255, 0.65);
+
+    --shadow:
+        0 20px 50px rgba(8, 126, 164, 0.12);
+
+    --radius: 22px;
+}
+
+
+/* ---------- RESET ---------- */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    font-family: "DM Sans", sans-serif;
+
+    color: var(--text);
+
+    min-height: 100vh;
+
+    background:
+        radial-gradient(
+            circle at 10% 10%,
+            rgba(6, 182, 212, 0.13),
+            transparent 30%
+        ),
+        radial-gradient(
+            circle at 90% 20%,
+            rgba(20, 184, 166, 0.10),
+            transparent 30%
+        ),
+        linear-gradient(
+            135deg,
+            #f8fdff,
+            #eefaff,
+            #f7fcff
+        );
+
+    overflow-x: hidden;
+}
+
+
+/* =========================================================
+   NAVBAR
+   ========================================================= */
+
+.navbar {
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 18px 7%;
+
+    background:
+        rgba(255, 255, 255, 0.78);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+    border-bottom:
+        1px solid rgba(8, 126, 164, 0.08);
+
+    box-shadow:
+        0 8px 30px rgba(8, 126, 164, 0.06);
+}
+
+
+/* ---------- LOGO ---------- */
+
+.logo {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 25px;
+
+    font-weight: 800;
+
+    color: var(--primary-dark);
+
+    letter-spacing: -0.5px;
+}
+
+
+.logo::first-letter {
+    font-size: 30px;
+}
+
+
+/* ---------- NAVIGATION ---------- */
+
+nav {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+nav a {
+
+    position: relative;
+
+    text-decoration: none;
+
+    color: #38556b;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    padding: 10px 15px;
+
+    border-radius: 12px;
+
+    transition: 0.3s ease;
+}
+
+
+nav a:hover {
+
+    color: var(--primary);
+
+    background:
+        rgba(8, 126, 164, 0.08);
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   MAIN DASHBOARD
+   ========================================================= */
+
+.dashboard {
+
+    width: min(1180px, 90%);
+
+    margin: 55px auto 80px;
+
+    position: relative;
+}
+
+
+/* ---------- WELCOME SECTION ---------- */
+
+.welcome {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 50px;
+
+    margin-bottom: 35px;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255, 255, 255, 0.95),
+            rgba(236, 250, 255, 0.88)
+        );
+
+    border:
+        1px solid var(--border);
+
+    box-shadow: var(--shadow);
+
+    text-align: left;
+}
+
+
+/* Decorative circles */
+
+.welcome::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+
+    height: 220px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(6, 182, 212, 0.10);
+
+    right: -70px;
+
+    top: -90px;
+
+    animation: float 6s ease-in-out infinite;
+}
+
+
+.welcome::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 100px;
+
+    height: 100px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(20, 184, 166, 0.08);
+
+    right: 150px;
+
+    bottom: -50px;
+
+    animation: float 5s ease-in-out infinite reverse;
+}
+
+
+.welcome h1 {
+
+    position: relative;
+
+    z-index: 2;
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: clamp(30px, 4vw, 46px);
+
+    font-weight: 800;
+
+    letter-spacing: -1.5px;
+
+    color: var(--primary-dark);
+
+    margin-bottom: 12px;
+}
+
+
+.welcome p {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 650px;
+
+    font-size: 16px;
+
+    line-height: 1.7;
+
+    color: var(--muted);
+}
+
+
+/* =========================================================
+   DASHBOARD GRID
+   ========================================================= */
+
+.dashboard-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(250px, 1fr)
+        );
+
+    gap: 22px;
+}
+
+
+/* =========================================================
+   DASHBOARD CARD
+   ========================================================= */
+
+.dashboard-card {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 30px;
+
+    min-height: 270px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    background:
+        rgba(255, 255, 255, 0.82);
+
+    backdrop-filter: blur(15px);
+
+    -webkit-backdrop-filter: blur(15px);
+
+    border:
+        1px solid rgba(255, 255, 255, 0.9);
+
+    border-radius: var(--radius);
+
+    box-shadow:
+        0 12px 35px rgba(15, 82, 110, 0.08);
+
+    transition:
+        transform 0.35s ease,
+        box-shadow 0.35s ease,
+        border-color 0.35s ease;
+
+    animation:
+        cardAppear 0.7s ease both;
+}
+
+
+/* Top glow */
+
+.dashboard-card::before {
+
+    content: "";
+
+    position: absolute;
+
+    width: 130px;
+
+    height: 130px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(6, 182, 212, 0.08);
+
+    top: -65px;
+
+    right: -65px;
+
+    transition: 0.4s ease;
+}
+
+
+.dashboard-card:hover {
+
+    transform:
+        translateY(-10px);
+
+    box-shadow:
+        0 25px 55px rgba(8, 126, 164, 0.15);
+
+    border-color:
+        rgba(6, 182, 212, 0.25);
+}
+
+
+.dashboard-card:hover::before {
+
+    transform: scale(1.4);
+}
+
+
+/* =========================================================
+   CARD ICON
+   ========================================================= */
+
+.card-icon {
+
+    width: 65px;
+
+    height: 65px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-bottom: 20px;
+
+    border-radius: 18px;
+
+    font-size: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(6, 182, 212, 0.12),
+            rgba(20, 184, 166, 0.12)
+        );
+
+    border:
+        1px solid rgba(6, 182, 212, 0.12);
+
+    transition: 0.35s ease;
+}
+
+
+.dashboard-card:hover .card-icon {
+
+    transform:
+        rotate(-5deg) scale(1.08);
+}
+
+
+/* =========================================================
+   CARD TEXT
+   ========================================================= */
+
+.dashboard-card h2 {
+
+    font-family: "Manrope", sans-serif;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    color: #123c56;
+
+    margin-bottom: 10px;
+}
+
+
+.dashboard-card p {
+
+    font-size: 14px;
+
+    line-height: 1.7;
+
+    color: var(--muted);
+
+    margin-bottom: 20px;
+}
+
+
+/* =========================================================
+   BUTTON
+   ========================================================= */
+
+.btn {
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 8px;
+
+    min-width: 135px;
+
+    padding: 12px 20px;
+
+    border: none;
+
+    border-radius: 13px;
+
+    background:
+        linear-gradient(
+            135deg,
+            var(--primary),
+            var(--secondary)
+        );
+
+    color: white;
+
+    font-family: "DM Sans", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(8, 126, 164, 0.20);
+
+    transition:
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+.btn:hover {
+
+    transform:
+        translateY(-3px);
+
+    box-shadow:
+        0 12px 28px rgba(8, 126, 164, 0.30);
+}
+
+
+.btn:active {
+
+    transform:
+        translateY(0);
+}
+
+
+/* =========================================================
+   FOOTER
+   ========================================================= */
+
+footer {
+
+    position: relative;
+
+    margin-top: 60px;
+
+    padding: 30px 20px;
+
+    text-align: center;
+
+    color: #d8f5fc;
+
+    background:
+        linear-gradient(
+            135deg,
+            #075985,
+            #087ea4
+        );
+}
+
+
+footer p {
+
+    font-size: 13px;
+
+    opacity: 0.9;
+}
+
+
+/* =========================================================
+   ANIMATIONS
+   ========================================================= */
+
+@keyframes float {
+
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(15px);
+    }
+}
+
+
+@keyframes cardAppear {
+
+    from {
+
+        opacity: 0;
+
+        transform:
+            translateY(25px);
+
+    }
+
+    to {
+
+        opacity: 1;
+
+        transform:
+            translateY(0);
+
+    }
+}
+
+
+/* =========================================================
+   RESPONSIVE DESIGN
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .navbar {
+
+        padding: 15px 5%;
+
+        flex-direction: column;
+
+        gap: 12px;
+    }
+
+
+    nav {
+
+        flex-wrap: wrap;
+
+        justify-content: center;
+    }
+
+
+    .dashboard {
+
+        width: 92%;
+
+        margin-top: 30px;
+    }
+
+
+    .welcome {
+
+        padding: 35px 25px;
+
+        text-align: center;
+    }
+
+
+    .welcome h1 {
+
+        font-size: 30px;
+    }
+
+
+    .dashboard-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+
+    .dashboard-card {
+
+        min-height: 240px;
+    }
+}
+
+
+@media (max-width: 480px) {
+
+    .logo {
+
+        font-size: 21px;
+    }
+
+
+    nav a {
+
+        font-size: 13px;
+
+        padding: 8px 10px;
+    }
+
+
+    .welcome {
+
+        border-radius: 22px;
+    }
+
+
+    .dashboard-card {
+
+        padding: 25px;
+    }
+}
