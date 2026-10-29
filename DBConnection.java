@@ -4,12 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
-/**
- * Database Connection Utility
- * --------------------------------
- * Provides a reusable connection to
- * the Healthcare Management Database.
- */
 public class DBConnection {
 
     private static final String URL =
@@ -25,9 +19,7 @@ public class DBConnection {
     private DBConnection() {
     }
 
-    /**
-     * Creates and returns a database connection.
-     */
+    
     public static Connection getConnection()
             throws SQLException {
 
