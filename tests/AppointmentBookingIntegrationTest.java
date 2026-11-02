@@ -107,6 +107,11 @@ public final class AppointmentBookingIntegrationTest {
 
     private static void deleteTestData(int patientOne, int patientTwo, int doctorId)
             throws Exception {
+        // Setup can fail before any test account is created (for example, if
+        // the disposable MySQL service is unavailable). In that case, there
+        // is nothing to clean up and we should preserve the original failure.
+        if (patientOne == 0 && patientTwo == 0 && doctorId == 0) return;
+
         try (Connection connection = DBConnection.getConnection()) {
             if (connection == null) throw new AssertionError("Database unavailable during test cleanup.");
             connection.setAutoCommit(false);
