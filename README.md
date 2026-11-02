@@ -23,7 +23,16 @@ Protected servlet routes and role-specific dashboard pages check the signed-in u
 
 ## Database setup
 
-Run `jdbc.sql` in MySQL Workbench or the MySQL client. SQL commands such as `CREATE USER` and `GRANT` must be entered in MySQL, not at a PowerShell prompt. Configure the app database account, then set these variables in the PowerShell window used to start Tomcat:
+The schema created by `jdbc.sql` is named `healthcare_db`. It contains the `users`, `doctors`, `patients`, and `appointments` tables. Run `jdbc.sql` in MySQL Workbench or from the MySQL command-line client; do not paste SQL statements into PowerShell.
+
+Create a dedicated MySQL account in MySQL Workbench or the MySQL client. Replace `choose_your_password` with a password you choose:
+
+```sql
+CREATE USER IF NOT EXISTS 'healthcare_app'@'localhost' IDENTIFIED BY 'choose_your_password';
+GRANT ALL PRIVILEGES ON healthcare_db.* TO 'healthcare_app'@'localhost';
+```
+
+Set the account credentials in the same PowerShell window that starts Tomcat. The app reads these environment variables; credentials are not configured in a `DBConnection.java` source file:
 
 ```powershell
 $env:HC_DB_USER = "healthcare_app"
