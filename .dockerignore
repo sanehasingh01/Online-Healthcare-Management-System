@@ -1,0 +1,7 @@
+.git
+.quality-check
+.db-check
+.deploy-build
+.build
+*.class
+CheckUsersTable.java

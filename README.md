@@ -73,6 +73,25 @@ $env:CATALINA_BASE = $tomcat
 
 Keep that window open while using the app. Open `http://localhost:8080/Healthcare/` (use your configured Tomcat HTTP port if different).
 
+## Publish a reviewer-accessible demo with Railway
+
+The repository includes a `Dockerfile` that compiles the servlets, packages the site at the root URL, and makes Tomcat listen on the port supplied by the host. Railway provides public HTTPS domains for deployed web services and a MySQL service that can be connected over its private network. Hosting providers may charge for usage; review the current plan and expected cost before deploying.
+
+1. Create a Railway project from this public GitHub repository. Railway detects the root `Dockerfile` and builds the web service.
+2. Add a MySQL service to the same Railway project. Set its database name to `healthcare_db` before initializing it.
+3. Configure these variables on the web service, replacing `MySQL` in the references if you named the database service differently:
+
+   ```text
+   HC_DB_URL=jdbc:mysql://${{MySQL.MYSQLHOST}}:${{MySQL.MYSQLPORT}}/${{MySQL.MYSQLDATABASE}}
+   HC_DB_USER=${{MySQL.MYSQLUSER}}
+   HC_DB_PASSWORD=${{MySQL.MYSQLPASSWORD}}
+   ```
+
+4. Initialize the database once by running `jdbc.sql` against the Railway MySQL service. For MySQL Workbench, enable the database service's TCP Proxy and use its displayed host and port with the credentials from the service. Keep those credentials private; Railway notes that external database traffic through TCP Proxy may incur network egress charges. You can also use Railway's `railway connect` CLI if it is installed and linked to your project.
+5. Deploy the web service, then open Settings → Networking and choose **Generate Domain**. Share the resulting HTTPS domain with reviewers.
+
+Use demonstration accounts and fictional patient information in a public student demo. Do not enter real patient data. Railway's [MySQL connection guide](https://docs.railway.com/databases/mysql) and [public domain guide](https://docs.railway.com/networking/domains/working-with-domains) describe the service setup.
+
 ## Run the automated checks
 
 The checks cover salted password hashes, valid and invalid credentials, legacy password compatibility, appointment date/time validation (including past times today), role-dashboard access rules, and MySQL-backed booking collision behavior. GitHub Actions compiles the servlet application and runs the unit and disposable-MySQL integration checks on each push and pull request. To run the dependency-free checks locally from the project root:
