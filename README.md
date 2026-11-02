@@ -104,6 +104,7 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 ├── tests/                  Dependency-free password and appointment-time checks
 ├── .github/workflows/      Automated Java checks on pushes and pull requests
 ├── docs/TESTING.md         Verified checks and end-to-end demo checklist
+├── docs/TEAM_WORK_PLAN.md  Planned team review assignments
 ├── WEB-INF/web.xml         Web application descriptor
 ├── lib/                    MySQL Connector/J
 ├── jdbc.sql                Database schema
@@ -116,6 +117,8 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 - Anshul Kumar
 - Ankit Kumar
 - Prashant Jaiswal
+
+The remaining review tasks are divided in [docs/TEAM_WORK_PLAN.md](docs/TEAM_WORK_PLAN.md). This is a plan, not a claim that the tasks are complete.
 
 ## Project presentation
 
