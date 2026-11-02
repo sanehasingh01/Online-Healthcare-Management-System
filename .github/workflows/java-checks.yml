@@ -14,6 +14,6 @@ jobs:
           distribution: temurin
           java-version: '17'
       - name: Compile utility tests
-        run: mkdir -p build/test-classes && javac -encoding UTF-8 -d build/test-classes util/PasswordUtil.java util/AppointmentTimeValidator.java tests/PasswordUtilTest.java tests/AppointmentTimeValidatorTest.java
+        run: mkdir -p build/test-classes && javac -encoding UTF-8 -d build/test-classes util/PasswordUtil.java util/AppointmentTimeValidator.java util/DashboardAccessPolicy.java tests/PasswordUtilTest.java tests/AppointmentTimeValidatorTest.java tests/DashboardAccessPolicyTest.java
       - name: Run utility tests
-        run: java -cp build/test-classes tests.PasswordUtilTest && java -cp build/test-classes tests.AppointmentTimeValidatorTest
+        run: java -cp build/test-classes tests.PasswordUtilTest && java -cp build/test-classes tests.AppointmentTimeValidatorTest && java -cp build/test-classes tests.DashboardAccessPolicyTest

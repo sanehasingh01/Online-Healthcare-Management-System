@@ -11,7 +11,7 @@ A Java Servlet, JDBC, and MySQL web application for patient, doctor, and adminis
 - Administrator overview for users, doctors, patients, appointment status, and system counts.
 - Responsive patient, doctor, and administrator dashboard pages.
 
-Every protected route checks the signed-in user's role. Public registration accepts patient and doctor roles; administrator accounts are created with the private setup utility below.
+Protected servlet routes and role-specific dashboard pages check the signed-in user's role. Public registration accepts patient and doctor roles; administrator accounts are created with the private setup utility below.
 
 ## Requirements
 
@@ -70,9 +70,10 @@ The dependency-free checks cover salted password hashes, valid and invalid crede
 ```powershell
 $build = Join-Path (Get-Location) ".build\classes"
 New-Item -ItemType Directory -Force $build | Out-Null
-javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java
+javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java util\DashboardAccessPolicy.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java tests\DashboardAccessPolicyTest.java
 java -cp $build tests.PasswordUtilTest
 java -cp $build tests.AppointmentTimeValidatorTest
+java -cp $build tests.DashboardAccessPolicyTest
 ```
 
 The application also needs a live MySQL and Tomcat environment for end-to-end checks. The verified checks and remaining demo steps are recorded in [docs/TESTING.md](docs/TESTING.md). Database workflows are manual and are not represented as an automated integration suite.
@@ -101,7 +102,7 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 ├── UserDAO.java            dao.UserDAO registration and authentication queries
 ├── AppointmentDAO.java     dao.AppointmentDAO appointment writes and status changes
 ├── util/                   Database connection and password hashing
-├── tests/                  Dependency-free password and appointment-time checks
+├── tests/                  Dependency-free password, appointment, and access checks
 ├── .github/workflows/      Automated Java checks on pushes and pull requests
 ├── docs/TESTING.md         Verified checks and end-to-end demo checklist
 ├── docs/TEAM_WORK_PLAN.md  Planned team review assignments

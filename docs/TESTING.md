@@ -8,6 +8,7 @@ This record separates checks already run from workflows that still need a team d
 |---|---|---|
 | Password utility checks | Passed: 8 | Salted hashes, correct and incorrect passwords, malformed hashes, null input, and legacy password compatibility |
 | Appointment time checks | Passed: 8 | Future appointment times, past dates and times, invalid values, and missing date |
+| Dashboard access policy checks | Passed: 7 | Each role dashboard requires the matching role; public pages remain public |
 | Servlet application compilation | Passed | Root servlet/DAO sources and `util` sources compiled against Tomcat 10.1 Servlet API and MySQL Connector/J |
 | Appointment page JavaScript syntax | Passed | Inline script in `appointment.html` parses successfully |
 | Local Tomcat homepage | HTTP 200 | `http://localhost:8081/Healthcare/` |
@@ -33,7 +34,8 @@ From the repository root in PowerShell:
 ```powershell
 $build = Join-Path (Get-Location) ".build\classes"
 New-Item -ItemType Directory -Force $build | Out-Null
-javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java
+javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java util\DashboardAccessPolicy.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java tests\DashboardAccessPolicyTest.java
 java -cp $build tests.PasswordUtilTest
 java -cp $build tests.AppointmentTimeValidatorTest
+java -cp $build tests.DashboardAccessPolicyTest
 ```
