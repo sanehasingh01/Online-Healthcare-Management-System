@@ -2,6 +2,19 @@
 
 This plan divides the remaining review and demo work into four similarly sized packages. These are assignments, not proof of completed contributions. Each person should complete their checks, fix any issue they find, make their own commit, and add evidence before the team marks a package done.
 
+## Reported contribution so far
+
+The project owner reported this approximate share of work completed to date:
+
+| Team member | Reported share |
+|---|---:|
+| Saneha Singh | 70% |
+| Anshul Kumar | 10% |
+| Ankit Kumar | 10% |
+| Prashant Jaiswal | 10% |
+
+These percentages are self-reported estimates, not independently verified measurements. The work packages below are planned follow-up tasks and do not count as completed contributions until each person finishes and demonstrates their work.
+
 ## Equal-sized work packages
 
 ### Saneha Singh — Admin and integration review
