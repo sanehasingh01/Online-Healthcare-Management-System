@@ -75,7 +75,7 @@ java -cp $build tests.PasswordUtilTest
 java -cp $build tests.AppointmentTimeValidatorTest
 ```
 
-The application also needs a live MySQL and Tomcat environment for end-to-end checks. After deployment, verify patient and doctor registration, duplicate-email rejection, login and role-specific pages, appointment booking, and doctor appointment updates. Check the Tomcat console/logs if any workflow fails; this checklist is manual and is not represented as an automated database integration suite.
+The application also needs a live MySQL and Tomcat environment for end-to-end checks. The verified checks and remaining demo steps are recorded in [docs/TESTING.md](docs/TESTING.md). Database workflows are manual and are not represented as an automated integration suite.
 
 ## Create the first administrator
 
@@ -103,6 +103,7 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 ├── util/                   Database connection and password hashing
 ├── tests/                  Dependency-free password and appointment-time checks
 ├── .github/workflows/      Automated Java checks on pushes and pull requests
+├── docs/TESTING.md         Verified checks and end-to-end demo checklist
 ├── WEB-INF/web.xml         Web application descriptor
 ├── lib/                    MySQL Connector/J
 ├── jdbc.sql                Database schema
