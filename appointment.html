@@ -182,6 +182,24 @@
     <script>
         const doctorSelect = document.getElementById("doctorId");
         const bookingError = document.getElementById("bookingError");
+        const dateInput = document.getElementById("date");
+        const timeInput = document.getElementById("time");
+        const pad = value => String(value).padStart(2, "0");
+        const localDateTime = () => {
+            const now = new Date();
+            return {
+                date: `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`,
+                time: `${pad(now.getHours())}:${pad(now.getMinutes())}`
+            };
+        };
+        const updateDateTimeLimits = () => {
+            const now = localDateTime();
+            dateInput.min = now.date;
+            timeInput.min = dateInput.value === now.date ? now.time : "";
+        };
+        dateInput.addEventListener("change", updateDateTimeLimits);
+        updateDateTimeLimits();
+
         const messages = {
             loginrequired: "Please log in with a patient account before booking.",
             invalid: "Choose a valid doctor and a future date and time.",
