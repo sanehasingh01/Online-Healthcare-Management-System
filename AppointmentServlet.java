@@ -3,9 +3,8 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import dao.AppointmentDAO;
-import java.time.LocalDate;
-import java.time.LocalTime;
-import java.time.format.DateTimeParseException;
+import java.time.LocalDateTime;
+import util.AppointmentTimeValidator;
 
 @WebServlet("/appointment")
 public class AppointmentServlet extends HttpServlet {
@@ -27,24 +26,25 @@ public class AppointmentServlet extends HttpServlet {
             response.sendRedirect(contextPath + "/login.html?error=loginrequired");
             return;
         }
+        if (doctorValue == null || doctorValue.isBlank()
+                || date == null || date.isBlank()
+                || time == null || time.isBlank()) {
+            response.sendRedirect(contextPath + "/appointment.html?error=missing");
+            return;
+        }
+
         int patientId = (Integer) session.getAttribute("userId");
         int doctorId;
         try {
             doctorId = Integer.parseInt(doctorValue);
-            LocalDate appointmentDate = LocalDate.parse(date);
-            LocalTime.parse(time);
-            if (appointmentDate.isBefore(LocalDate.now())) {
-                response.sendRedirect(contextPath + "/appointment.html?error=invalid");
-                return;
-            }
-        } catch (NumberFormatException | NullPointerException | DateTimeParseException e) {
+        } catch (NumberFormatException e) {
             response.sendRedirect(contextPath + "/appointment.html?error=invalid");
             return;
         }
 
-        if (doctorId <= 0 || date == null || date.isBlank()
-                || time == null || time.isBlank()) {
-            response.sendRedirect(contextPath + "/appointment.html?error=missing");
+        if (doctorId <= 0
+                || !AppointmentTimeValidator.isFuture(date, time, LocalDateTime.now())) {
+            response.sendRedirect(contextPath + "/appointment.html?error=invalid");
             return;
         }
 

@@ -65,13 +65,14 @@ Keep that window open while using the app. Open `http://localhost:8080/Healthcar
 
 ## Run the automated checks
 
-The password utility has dependency-free checks for salted hashes, valid and invalid passwords, malformed stored hashes, and compatibility with existing plain-text rows. From the project root, run:
+The dependency-free checks cover salted password hashes, valid and invalid credentials, legacy password compatibility, and appointment date/time validation (including past times today). GitHub Actions runs these checks on each push and pull request. To run them locally from the project root:
 
 ```powershell
 $build = Join-Path (Get-Location) ".build\classes"
 New-Item -ItemType Directory -Force $build | Out-Null
-javac -encoding UTF-8 -cp $build -d $build util\PasswordUtil.java tests\PasswordUtilTest.java
+javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java
 java -cp $build tests.PasswordUtilTest
+java -cp $build tests.AppointmentTimeValidatorTest
 ```
 
 The application also needs a live MySQL and Tomcat environment for end-to-end checks. After deployment, verify patient and doctor registration, duplicate-email rejection, login and role-specific pages, appointment booking, and doctor appointment updates. Check the Tomcat console/logs if any workflow fails; this checklist is manual and is not represented as an automated database integration suite.
@@ -100,7 +101,8 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 ├── UserDAO.java            dao.UserDAO registration and authentication queries
 ├── AppointmentDAO.java     dao.AppointmentDAO appointment writes and status changes
 ├── util/                   Database connection and password hashing
-├── tests/                  Dependency-free password utility checks
+├── tests/                  Dependency-free password and appointment-time checks
+├── .github/workflows/      Automated Java checks on pushes and pull requests
 ├── WEB-INF/web.xml         Web application descriptor
 ├── lib/                    MySQL Connector/J
 ├── jdbc.sql                Database schema
