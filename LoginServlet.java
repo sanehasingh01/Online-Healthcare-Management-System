@@ -6,6 +6,7 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 @WebServlet("/login")
 public class LoginServlet extends HttpServlet {
@@ -19,6 +20,7 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+        String contextPath = request.getContextPath();
 
         String email = request.getParameter("email");
         String password = request.getParameter("password");
@@ -26,7 +28,7 @@ public class LoginServlet extends HttpServlet {
         if (email == null || email.trim().isEmpty()
                 || password == null || password.isEmpty()) {
 
-            response.sendRedirect("login.html?error=missing");
+            response.sendRedirect(contextPath + "/login.html?error=missing");
             return;
         }
 
@@ -39,30 +41,43 @@ public class LoginServlet extends HttpServlet {
             String role = dao.getUserRole(email);
 
             if (role == null) {
-                response.sendRedirect("login.html?error=InvalidLogin");
+                response.sendRedirect(contextPath + "/login.html?error=invalidlogin");
                 return;
             }
 
+            int userId = dao.getUserIdAndEnsureProfile(email, role);
+            if (userId < 1) {
+                response.sendRedirect(contextPath + "/login.html?error=invalidlogin");
+                return;
+            }
+
+            HttpSession oldSession = request.getSession(false);
+            if (oldSession != null) oldSession.invalidate();
+            HttpSession session = request.getSession(true);
+            session.setAttribute("userId", userId);
+            session.setAttribute("userRole", role.toLowerCase());
+            session.setAttribute("userEmail", email);
+
             switch (role.toLowerCase()) {
                 case "admin":
-                    response.sendRedirect("admin-dashboard.html");
+                    response.sendRedirect(contextPath + "/admin");
                     break;
 
                 case "doctor":
-                    response.sendRedirect("doctor-dashboard.html");
+                    response.sendRedirect(contextPath + "/doctor-dashboard.html");
                     break;
 
                 case "patient":
-                    response.sendRedirect("patient-dashboard.html");
+                    response.sendRedirect(contextPath + "/patient-dashboard.html");
                     break;
 
                 default:
-                    response.sendRedirect("login.html?error=InvalidRole");
+                    response.sendRedirect(contextPath + "/login.html?error=invalidrole");
                     break;
             }
 
         } else {
-            response.sendRedirect("login.html?error=InvalidLogin");
+            response.sendRedirect(contextPath + "/login.html?error=invalidlogin");
         }
     }
 }

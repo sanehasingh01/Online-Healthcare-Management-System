@@ -1,83 +1,105 @@
-# 🩺 Online Healthcare Management System
+# Online Healthcare Management System
 
-## 📌 Project Description
+A Java Servlet, JDBC, and MySQL web application for patient, doctor, and administrator workflows.
 
-The Online Healthcare Management System is a Java-based
-web application designed to simplify healthcare management.
+## Features
 
-Patients can register, login and book appointments.
+- Patient and doctor registration with password hashing and database-backed login.
+- Patient appointment booking, appointment history, and cancellation of pending requests.
+- Doctor appointment review, confirmation, completion, and cancellation for assigned appointments.
+- Doctor schedule editing and patient medical-history editing from the signed-in patient's account.
+- Administrator overview for users, doctors, patients, appointment status, and system counts.
+- Responsive patient, doctor, and administrator dashboard pages.
 
-Doctors can manage schedules and view appointments.
+Every protected route checks the signed-in user's role. Public registration accepts patient and doctor roles; administrator accounts are created with the private setup utility below.
 
-Administrators can manage users and appointments.
+## Requirements
 
-## 🚀 Technologies Used
+- JDK 17 or later.
+- Apache Tomcat 10.1 or later (Jakarta Servlet API).
+- MySQL 8 or compatible server.
+- The MySQL Connector/J JAR included in `lib/`.
 
-- Java
-- HTML
-- CSS
-- Java Servlets
-- JDBC
-- MySQL
-- Apache Tomcat
-- VS Code
-- GitHub
+## Database setup
 
-## 👥 User Roles
+Run `jdbc.sql` in MySQL Workbench or the MySQL client. SQL commands such as `CREATE USER` and `GRANT` must be entered in MySQL, not at a PowerShell prompt. Configure the app database account, then set these variables in the PowerShell window used to start Tomcat:
 
-### Patient
-- Register
-- Login
-- Book appointment
-- View appointment history
-- View medical history
+```powershell
+$env:HC_DB_USER = "healthcare_app"
+$env:HC_DB_PASSWORD = Read-Host "Enter the MySQL password"
+# Optional; defaults to jdbc:mysql://localhost:3306/healthcare_db
+$env:HC_DB_URL = "jdbc:mysql://localhost:3306/healthcare_db"
+```
 
-### Doctor
-- Login
-- Manage schedule
-- View appointments
-- View patient information
+Do not commit database passwords to source control.
 
-### Admin
-- Manage users
-- Manage doctors
-- Manage patients
-- Manage appointments
-- View system statistics
+## Build and deploy on Windows
 
-## 🗄️ Database
+Set `$tomcat` to the extracted Tomcat directory. From the project root, compile and copy the classes and web files:
 
-Database Name:
+```powershell
+$tomcat = "C:\path\to\apache-tomcat-10.1.x"
+$project = (Get-Location).Path
+$build = Join-Path $project ".build\classes"
+$webClasses = Join-Path $tomcat "webapps\Healthcare\WEB-INF\classes"
+New-Item -ItemType Directory -Force $build, $webClasses | Out-Null
+$sources = @((Get-ChildItem $project -Filter "*.java" -File).FullName) + @((Get-ChildItem (Join-Path $project "util") -Filter "*.java" -File).FullName)
+$classpath = "$tomcat\lib\servlet-api.jar;$project\lib\mysql-connector-j-26.7.0.jar"
+javac -encoding UTF-8 -cp $classpath -d $build $sources
+Copy-Item (Join-Path $build "*") $webClasses -Recurse -Force
+Copy-Item (Join-Path $project "*.html") (Join-Path $tomcat "webapps\Healthcare") -Force
+Copy-Item (Join-Path $project "style.css") (Join-Path $tomcat "webapps\Healthcare") -Force
+Copy-Item (Join-Path $project "lib\mysql-connector-j-26.7.0.jar") (Join-Path $tomcat "webapps\Healthcare\WEB-INF\lib") -Force
+```
 
-healthcare
+Ensure `WEB-INF/lib` exists before copying the connector JAR. Start Tomcat from the same PowerShell window after setting `JAVA_HOME`, `CATALINA_HOME`, `CATALINA_BASE`, and the database environment variables:
 
-Main tables:
+```powershell
+$env:JAVA_HOME = "C:\path\to\jdk-17-or-later"
+$env:CATALINA_HOME = $tomcat
+$env:CATALINA_BASE = $tomcat
+& "$tomcat\bin\catalina.bat" run
+```
 
-- users
-- doctors
-- patients
-- appointments
-- medical_records
+Keep that window open while using the app. Open `http://localhost:8080/Healthcare/` (use your configured Tomcat HTTP port if different).
 
-## ▶️ How to Run
+## Create the first administrator
 
-1. Install Java JDK.
-2. Install MySQL.
-3. Create the healthcare database.
-4. Run jdbc.sql.
-5. Add MySQL JDBC Connector.
-6. Configure DBConnection.java.
-7. Configure Apache Tomcat.
-8. Deploy the project.
-9. Open the application in a browser.
+Create an administrator from a trusted local PowerShell session; there is no public admin signup. After compiling, set database credentials and the temporary admin values, then run:
 
-## 📂 Project Structure
+```powershell
+$env:HC_ADMIN_NAME = Read-Host "Administrator name"
+$env:HC_ADMIN_EMAIL = Read-Host "Administrator email"
+$env:HC_ADMIN_PASSWORD = Read-Host "Temporary administrator password"
+$classpath = ".build\classes;lib\mysql-connector-j-26.7.0.jar"
+java -cp $classpath AdminSetup
+Remove-Item Env:HC_ADMIN_NAME, Env:HC_ADMIN_EMAIL, Env:HC_ADMIN_PASSWORD
+```
 
-The project contains Java DAO classes,
-Servlets, HTML pages, CSS and SQL database scripts.
+The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite an existing email.
 
-## 👩‍💻 Project Team
-Saneha singh,
-Anshul kumar,
-Ankit kumar,
-Prashant jaiswal.
+## Project structure
+
+```text
+.
+├── *.html                  Responsive web pages
+├── *.java                  Servlet routes and setup utility
+├── UserDAO.java            User registration and authentication queries
+├── AppointmentDAO.java     Appointment writes and status changes
+├── util/                   Database connection and password hashing
+├── WEB-INF/web.xml         Web application descriptor
+├── lib/                    MySQL Connector/J
+├── jdbc.sql                Database schema
+└── style.css               Shared UI styles
+```
+
+## Team
+
+- Saneha Singh
+- Anshul Kumar
+- Ankit Kumar
+
+## Project presentation
+
+The project review presentation is available at [docs/Healthcare-Management-Project-Review.pptx](docs/Healthcare-Management-Project-Review.pptx).
+- Prashant Jaiswal

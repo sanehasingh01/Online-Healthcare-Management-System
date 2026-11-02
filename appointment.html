@@ -1,29 +1,221 @@
-<form action="appointment" method="post">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3fbfa">
+    <title>Book an Appointment | MedCare</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        :root {
+            --booking-ink: #17364a;
+            --booking-muted: #6b8190;
+            --booking-teal: #078b83;
+            --booking-teal-dark: #066b67;
+            --booking-line: #dce9e8;
+            --booking-wash: #f3fbfa;
+        }
 
-    <input
-        type="number"
-        name="patientId"
-        placeholder="Patient ID"
-        required>
+        body.booking-page {
+            min-height: 100vh;
+            color: var(--booking-ink);
+            background:
+                radial-gradient(circle at 6% 30%, rgba(8, 139, 131, .10), transparent 27rem),
+                radial-gradient(circle at 97% 8%, rgba(80, 184, 157, .12), transparent 24rem),
+                #f7fbfb;
+        }
 
-    <input
-        type="number"
-        name="doctorId"
-        placeholder="Doctor ID"
-        required>
+        .booking-nav { padding-inline: max(6%, calc((100% - 1160px) / 2)); }
+        .booking-nav .logo { color: var(--booking-teal-dark); }
+        .booking-nav nav a.active { color: var(--booking-teal-dark); background: #e8f6f3; }
 
-    <input
-        type="date"
-        name="date"
-        required>
+        .booking-shell { width: min(1160px, 88%); margin: 0 auto; padding: 54px 0 76px; }
+        .booking-heading { max-width: 690px; margin: 0 0 30px; }
+        .booking-eyebrow {
+            display: inline-flex; align-items: center; gap: 8px;
+            color: var(--booking-teal-dark); background: #e6f5f1;
+            border: 1px solid #d4ece6; border-radius: 999px;
+            padding: 8px 13px; font-size: 12px; font-weight: 700; letter-spacing: .08em;
+        }
+        .booking-heading h1 {
+            margin: 18px 0 10px; color: var(--booking-ink);
+            font: 800 clamp(34px, 5vw, 48px)/1.12 "Manrope", "DM Sans", sans-serif;
+            letter-spacing: -.04em;
+        }
+        .booking-heading p { max-width: 600px; color: var(--booking-muted); font-size: 16px; line-height: 1.7; }
 
-    <input
-        type="time"
-        name="time"
-        required>
+        .booking-layout { display: grid; grid-template-columns: minmax(0, 1.55fr) minmax(250px, .75fr); gap: 22px; align-items: start; }
+        .booking-card, .booking-aside {
+            background: rgba(255,255,255,.94); border: 1px solid var(--booking-line);
+            border-radius: 22px; box-shadow: 0 18px 48px rgba(26, 75, 79, .08);
+        }
+        .booking-card { padding: clamp(22px, 4vw, 38px); }
+        .booking-card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 14px; margin-bottom: 26px; }
+        .booking-card-head h2 { margin: 0 0 6px; color: var(--booking-ink); font: 750 22px/1.25 "Manrope", "DM Sans", sans-serif; }
+        .booking-card-head p { margin: 0; color: var(--booking-muted); font-size: 14px; }
+        .booking-step { flex: 0 0 auto; color: var(--booking-teal-dark); background: #e7f5f2; border-radius: 12px; padding: 9px 11px; font-size: 12px; font-weight: 700; }
 
-    <button type="submit">
-        Book Appointment
-    </button>
+        .booking-form { display: grid; grid-template-columns: 1fr 1fr; gap: 19px 16px; }
+        .booking-field { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+        .booking-field.full { grid-column: 1 / -1; }
+        .booking-field label { color: #304f60; font-size: 13px; font-weight: 700; }
+        .booking-field input {
+            width: 100%; min-height: 49px; padding: 0 14px;
+            color: var(--booking-ink); background: #fbfdfd;
+            border: 1px solid #d5e3e2; border-radius: 11px;
+            font: inherit; outline: none; transition: border-color .18s, box-shadow .18s, background .18s;
+        }
+        .booking-field select {
+            width: 100%; min-height: 49px; padding: 0 14px;
+            color: var(--booking-ink); background: #fbfdfd;
+            border: 1px solid #d5e3e2; border-radius: 11px;
+            font: inherit; outline: none;
+        }
+        .booking-field select:focus { border-color: var(--booking-teal); box-shadow: 0 0 0 4px rgba(7,139,131,.12); }
+        .booking-error { display: none; margin: 0 0 18px; padding: 12px 14px; border-radius: 10px; color: #8d2930; background: #fff0f0; font-size: 14px; }
+        .booking-field input::placeholder { color: #91a2ac; }
+        .booking-field input:focus { border-color: var(--booking-teal); background: #fff; box-shadow: 0 0 0 4px rgba(7,139,131,.12); }
+        .booking-field small { color: #82939d; font-size: 12px; line-height: 1.45; }
+        .booking-submit {
+            grid-column: 1 / -1; display: flex; align-items: center; justify-content: center; gap: 10px;
+            min-height: 52px; margin-top: 4px; padding: 12px 18px;
+            border: 0; border-radius: 12px; color: #fff; background: var(--booking-teal);
+            font: 700 15px "DM Sans", sans-serif; cursor: pointer;
+            box-shadow: 0 9px 20px rgba(7,139,131,.20); transition: transform .18s, background .18s, box-shadow .18s;
+        }
+        .booking-submit:hover { background: var(--booking-teal-dark); transform: translateY(-1px); box-shadow: 0 12px 24px rgba(7,139,131,.24); }
+        .booking-submit:focus-visible { outline: 3px solid rgba(7,139,131,.32); outline-offset: 3px; }
 
-</form>
+        .booking-aside { padding: 26px; overflow: hidden; position: relative; }
+        .booking-aside::after { content: ""; position: absolute; width: 150px; height: 150px; border-radius: 50%; right: -72px; top: -72px; background: #eaf7f4; }
+        .aside-icon { position: relative; z-index: 1; display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 19px; color: var(--booking-teal-dark); background: #e5f5f1; border-radius: 15px; font-size: 22px; }
+        .booking-aside h2 { position: relative; z-index: 1; margin: 0 0 9px; color: var(--booking-ink); font: 750 18px "Manrope", "DM Sans", sans-serif; }
+        .booking-aside > p { position: relative; z-index: 1; margin: 0; color: var(--booking-muted); font-size: 14px; line-height: 1.65; }
+        .aside-rule { height: 1px; margin: 22px 0; background: var(--booking-line); }
+        .booking-note { display: flex; align-items: flex-start; gap: 10px; margin: 14px 0; color: #516a77; font-size: 13px; line-height: 1.5; }
+        .booking-note span { flex: 0 0 auto; color: var(--booking-teal); font-weight: 800; }
+        .booking-footer { padding: 18px 6%; color: #82939d; text-align: center; font-size: 12px; }
+
+        @media (max-width: 760px) {
+            .booking-shell { width: min(600px, 90%); padding-top: 38px; }
+            .booking-layout { grid-template-columns: 1fr; }
+            .booking-aside { display: grid; grid-template-columns: 48px 1fr; column-gap: 14px; }
+            .aside-icon { grid-row: span 2; }
+            .booking-aside h2 { align-self: end; }
+            .booking-aside > p { align-self: start; }
+            .aside-rule, .booking-note { grid-column: 1 / -1; }
+        }
+        @media (max-width: 500px) {
+            .booking-nav { padding: 14px 5%; }
+            .booking-nav nav a:not(.nav-btn) { display: none; }
+            .booking-shell { width: 92%; padding: 32px 0 50px; }
+            .booking-heading { margin-bottom: 22px; }
+            .booking-heading p { font-size: 14px; }
+            .booking-card { padding: 21px 17px; border-radius: 18px; }
+            .booking-form { grid-template-columns: 1fr; gap: 16px; }
+            .booking-field.full, .booking-submit { grid-column: auto; }
+            .booking-card-head { margin-bottom: 21px; }
+            .booking-step { font-size: 11px; }
+        }
+    </style>
+</head>
+<body class="booking-page">
+    <header class="navbar booking-nav">
+        <a class="logo" href="index.html" aria-label="MedCare home">✚ MedCare</a>
+        <nav aria-label="Main navigation">
+            <a href="index.html">Home</a>
+            <a class="active" href="appointment.html" aria-current="page">Appointments</a>
+            <a class="nav-btn" href="logout">Log out</a>
+        </nav>
+    </header>
+
+    <main class="booking-shell">
+        <section class="booking-heading" aria-labelledby="page-title">
+            <span class="booking-eyebrow">✦ YOUR CARE, SCHEDULED</span>
+            <h1 id="page-title">Book an appointment</h1>
+            <p>Choose a doctor and a time that works for you. We’ll keep your visit details organized in one place.</p>
+        </section>
+
+        <div class="booking-layout">
+            <section class="booking-card" aria-labelledby="form-title">
+                <div class="booking-card-head">
+                    <div>
+                        <h2 id="form-title">Appointment details</h2>
+                        <p>Complete the details below to request a visit.</p>
+                    </div>
+                    <span class="booking-step">STEP 1 OF 1</span>
+                </div>
+
+                <p class="booking-error" id="bookingError" role="alert"></p>
+                <form class="booking-form" action="appointment" method="post">
+                    <div class="booking-field full">
+                        <label for="doctorId">Choose a doctor</label>
+                        <select id="doctorId" name="doctorId" required>
+                            <option value="">Loading doctors…</option>
+                        </select>
+                        <small>Your patient account is identified automatically after login.</small>
+                    </div>
+                    <div class="booking-field">
+                        <label for="date">Preferred date</label>
+                        <input id="date" type="date" name="date" required>
+                    </div>
+                    <div class="booking-field">
+                        <label for="time">Preferred time</label>
+                        <input id="time" type="time" name="time" required>
+                    </div>
+                    <button class="booking-submit" type="submit">Request appointment <span aria-hidden="true">→</span></button>
+                </form>
+            </section>
+
+            <aside class="booking-aside" aria-labelledby="help-title">
+                <div class="aside-icon" aria-hidden="true">✚</div>
+                <h2 id="help-title">A smoother visit starts here</h2>
+                <p>Select a doctor from the list, then choose a date and time that work for you.</p>
+                <div class="aside-rule"></div>
+                <p class="booking-note"><span>✓</span><span>Your request is saved with a pending status.</span></p>
+                <p class="booking-note"><span>✓</span><span>Keep your appointment details handy for your visit.</span></p>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="booking-footer">© 2026 MedCare Healthcare Management System</footer>
+    <script>
+        const doctorSelect = document.getElementById("doctorId");
+        const bookingError = document.getElementById("bookingError");
+        const messages = {
+            loginrequired: "Please log in with a patient account before booking.",
+            invalid: "Choose a valid doctor and a future date and time.",
+            missing: "Complete all appointment details.",
+            failed: "The appointment could not be saved. Check that a doctor is registered, then try again."
+        };
+        const errorCode = new URLSearchParams(location.search).get("error");
+        if (messages[errorCode]) {
+            bookingError.textContent = messages[errorCode];
+            bookingError.style.display = "block";
+        }
+
+        fetch("doctors")
+            .then(response => {
+                if (!response.ok) throw new Error("Doctor list unavailable");
+                return response.json();
+            })
+            .then(doctors => {
+                doctorSelect.replaceChildren(new Option(
+                    doctors.length ? "Select a doctor" : "No doctors registered yet",
+                    ""
+                ));
+                doctors.forEach(doctor => {
+                    doctorSelect.add(new Option(
+                        `${doctor.name} — ${doctor.specialization}`,
+                        doctor.id
+                    ));
+                });
+                doctorSelect.disabled = doctors.length === 0;
+            })
+            .catch(() => {
+                doctorSelect.replaceChildren(new Option("Could not load doctors", ""));
+                doctorSelect.disabled = true;
+            });
+    </script>
+</body>
+</html>

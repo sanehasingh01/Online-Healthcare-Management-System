@@ -1,5 +1,12 @@
 *.class
 target/
 build/
+.build/
+.db-check/
+.deploy-build/
+.deck-build/
+.deck-output/
+WEB-INF/classes/
+WEB-INF/lib/
 .idea/
 .vscode/

@@ -19,19 +19,23 @@ public class RegisterServlet extends HttpServlet {
             throws ServletException, IOException {
 
         request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=UTF-8");
 
         String name = request.getParameter("name");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String role = request.getParameter("role");
 
-        // Check that all required fields are provided
+        String contextPath = request.getContextPath();
+
+        // Check required fields
         if (name == null || name.trim().isEmpty()
                 || email == null || email.trim().isEmpty()
                 || password == null || password.isEmpty()
                 || role == null || role.trim().isEmpty()) {
 
-            response.sendRedirect("register.html?error=missing");
+            response.sendRedirect(
+                    contextPath + "/register.html?error=missing");
             return;
         }
 
@@ -39,33 +43,45 @@ public class RegisterServlet extends HttpServlet {
         email = email.trim();
         role = role.trim().toLowerCase();
 
-        // Allow only the roles supported by this application
+        // Validate role
         if (!role.equals("patient")
-                && !role.equals("doctor")
-                && !role.equals("admin")) {
+                && !role.equals("doctor")) {
 
-            response.sendRedirect("register.html?error=invalidrole");
+            response.sendRedirect(
+                    contextPath + "/register.html?error=invalidrole");
             return;
         }
 
-        // Check whether the email is already registered
-        if (dao.emailExists(email)) {
-            response.sendRedirect("register.html?error=exists");
-            return;
-        }
+        try {
+            // Check existing email
+            if (dao.emailExists(email)) {
+                response.sendRedirect(
+                        contextPath + "/register.html?error=exists");
+                return;
+            }
 
-        // Save the new user
-        boolean success = dao.addUser(
-                name,
-                email,
-                password,
-                role
-        );
+            // Register user
+            boolean success = dao.addUser(
+                    name,
+                    email,
+                    password,
+                    role
+            );
 
-        if (success) {
-            response.sendRedirect("login.html?registered=success");
-        } else {
-            response.sendRedirect("register.html?error=failed");
+            if (success) {
+                response.sendRedirect(
+                        contextPath + "/login.html?registered=success");
+            } else {
+                response.sendRedirect(
+                        contextPath + "/register.html?error=failed");
+            }
+
+        } catch (RuntimeException e) {
+            // Keep the browser message generic while recording the cause in Tomcat logs.
+            getServletContext().log("Registration failed due to a server-side error.", e);
+
+            response.sendRedirect(
+                    contextPath + "/register.html?error=failed");
         }
     }
 }

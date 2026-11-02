@@ -1,37 +1,610 @@
-<form action="register" method="post">
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | MedCare</title>
 
-    <input
-        type="text"
-        name="name"
-        placeholder="Full Name"
-        required>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        required>
+        :root {
+            --primary: #087f8c;
+            --primary-dark: #066773;
+            --background: #f2f8fa;
+            --text: #17313b;
+            --muted: #71858d;
+            --border: #dce8eb;
+        }
 
-    <input
-        type="password"
-        name="password"
-        placeholder="Password"
-        required>
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 28px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
 
-    <select name="role">
+        .page {
+            width: 100%;
+            max-width: 1050px;
+            min-height: 650px;
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 65px rgba(26, 71, 83, 0.12);
+        }
 
-        <option value="Patient">
-            Patient
-        </option>
+        .intro {
+            position: relative;
+            overflow: hidden;
+            padding: 48px 40px;
+            color: white;
+            background: linear-gradient(145deg, #087f8c, #0b596f);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
 
-        <option value="Doctor">
-            Doctor
-        </option>
+        .intro::before,
+        .intro::after {
+            content: "";
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            border-radius: 50%;
+            pointer-events: none;
+        }
 
-    </select>
+        .intro::before {
+            width: 320px;
+            height: 320px;
+            right: -140px;
+            top: 120px;
+        }
 
-    <button type="submit">
-        Register
-    </button>
+        .intro::after {
+            width: 230px;
+            height: 230px;
+            right: -95px;
+            top: 165px;
+        }
 
-</form>
+        .brand,
+        .intro-content,
+        .intro-footer {
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 25px;
+            font-weight: 750;
+            letter-spacing: -0.5px;
+        }
+
+        .brand-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.17);
+            font-size: 26px;
+        }
+
+        .intro-content {
+            margin: 55px 0;
+        }
+
+        .eyebrow {
+            display: inline-block;
+            padding: 8px 13px;
+            margin-bottom: 22px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.14);
+            font-size: 12px;
+            letter-spacing: 1px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .intro h1 {
+            font-size: clamp(32px, 4vw, 43px);
+            line-height: 1.18;
+            letter-spacing: -1.2px;
+            margin-bottom: 20px;
+        }
+
+        .intro-content > p {
+            color: rgba(255, 255, 255, 0.82);
+            line-height: 1.8;
+            font-size: 15px;
+        }
+
+        .features {
+            margin-top: 32px;
+            display: grid;
+            gap: 17px;
+        }
+
+        .feature {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.94);
+        }
+
+        .feature-icon {
+            width: 35px;
+            height: 35px;
+            flex-shrink: 0;
+            display: grid;
+            place-items: center;
+            background: rgba(255, 255, 255, 0.14);
+            border-radius: 11px;
+        }
+
+        .intro-footer {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.72);
+        }
+
+        .form-panel {
+            padding: 42px 48px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-header {
+            margin-bottom: 26px;
+        }
+
+        .form-header h2 {
+            font-size: 29px;
+            letter-spacing: -0.8px;
+            margin-bottom: 9px;
+        }
+
+        .form-header p {
+            color: var(--muted);
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .role-label {
+            display: block;
+            margin-bottom: 11px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .roles {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 9px;
+            margin-bottom: 23px;
+        }
+
+        .role-option {
+            position: relative;
+        }
+
+        .role-option input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .role-option label {
+            min-height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 10px 5px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: #61757d;
+            font-size: 12px;
+            font-weight: 650;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .role-option input:checked + label {
+            color: var(--primary-dark);
+            background: #eaf8f8;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(8, 127, 140, 0.08);
+        }
+
+        .role-option input:focus-visible + label {
+            outline: 2px solid var(--primary);
+            outline-offset: 3px;
+        }
+
+        .field {
+            margin-bottom: 17px;
+        }
+
+        .field label {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            font-weight: 650;
+            color: #314a53;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap > span {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 17px;
+            color: #80969e;
+        }
+
+        .field input {
+            width: 100%;
+            height: 47px;
+            padding: 0 43px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            background: #fbfdfe;
+            color: var(--text);
+            font-size: 13px;
+            outline: none;
+            transition: 0.2s;
+        }
+
+        .field input:focus {
+            border-color: var(--primary);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(8, 127, 140, 0.09);
+        }
+
+        .field input::placeholder {
+            color: #9aabb1;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: none;
+            background: transparent;
+            color: var(--primary);
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .submit-btn {
+            width: 100%;
+            min-height: 49px;
+            margin-top: 5px;
+            border: none;
+            border-radius: 11px;
+            background: var(--primary);
+            color: white;
+            font-size: 14px;
+            font-weight: 750;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .submit-btn:hover {
+            background: var(--primary-dark);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(8, 127, 140, 0.2);
+        }
+
+        .status-message {
+            display: none;
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 9px;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .status-message.error {
+            display: block;
+            color: #a12626;
+            background: #fff0f0;
+        }
+
+        .status-message.success {
+            display: block;
+            color: #176b47;
+            background: #eaf8f0;
+        }
+
+        .login-link {
+            margin-top: 23px;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .login-link a {
+            color: var(--primary);
+            font-weight: 750;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .home-link {
+            display: block;
+            margin-top: 13px;
+            text-align: center;
+            font-size: 12px;
+            color: #82949a;
+            text-decoration: none;
+        }
+
+        .home-link:hover {
+            color: var(--primary);
+        }
+
+        @media (max-width: 800px) {
+            body {
+                padding: 16px;
+            }
+
+            .page {
+                max-width: 540px;
+                grid-template-columns: 1fr;
+            }
+
+            .intro {
+                padding: 30px;
+            }
+
+            .intro-content {
+                margin: 35px 0 20px;
+            }
+
+            .intro h1 {
+                font-size: 32px;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .intro-footer {
+                margin-top: 10px;
+            }
+
+            .form-panel {
+                padding: 35px 28px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .form-panel {
+                padding: 28px 20px;
+            }
+
+            .roles {
+                gap: 5px;
+            }
+
+            .role-option label {
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <main class="page">
+
+        <section class="intro">
+            <div class="brand">
+                <div class="brand-icon">✚</div>
+                <span>MedCare</span>
+            </div>
+
+            <div class="intro-content">
+                <span class="eyebrow">Your health, our priority</span>
+
+                <h1>Better care.<br>Better living.</h1>
+
+                <p>
+                    Join MedCare to manage your healthcare journey
+                    with convenient appointments and organised
+                    health information.
+                </p>
+
+                <div class="features">
+                    <div class="feature">
+                        <span class="feature-icon">♡</span>
+                        <span>Healthcare management in one place</span>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">✚</span>
+                        <span>Connect with your healthcare team</span>
+                    </div>
+
+                    <div class="feature">
+                        <span class="feature-icon">✓</span>
+                        <span>Simple and convenient appointment access</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="intro-footer">
+                © 2026 MedCare Healthcare Management System
+            </div>
+        </section>
+
+        <section class="form-panel">
+            <div class="form-header">
+                <h2>Create your account</h2>
+                <p>Enter your details below to get started.</p>
+            </div>
+
+            <form id="registerForm" action="register" method="post">
+
+                <span class="role-label">I want to register as</span>
+
+                <div class="roles">
+                    <div class="role-option">
+                        <input type="radio" id="patient" name="role"
+                               value="patient" checked>
+                        <label for="patient">🧑 Patient</label>
+                    </div>
+
+                    <div class="role-option">
+                        <input type="radio" id="doctor" name="role"
+                               value="doctor">
+                        <label for="doctor">🩺 Doctor</label>
+                    </div>
+
+                </div>
+
+                <div class="field">
+                    <label for="name">Full name</label>
+                    <div class="input-wrap">
+                        <span>♙</span>
+                        <input type="text" id="name" name="name"
+                               placeholder="Enter your full name"
+                               autocomplete="name" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="email">Email address</label>
+                    <div class="input-wrap">
+                        <span>✉</span>
+                        <input type="email" id="email" name="email"
+                               placeholder="you@example.com"
+                               autocomplete="email" required>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="password">Password</label>
+                    <div class="input-wrap">
+                        <span>♙</span>
+                        <input type="password" id="password" name="password"
+                               placeholder="Create a password"
+                               autocomplete="new-password"
+                               minlength="6" required>
+                        <button type="button" class="toggle-password"
+                                onclick="togglePassword('password', this)">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="confirmPassword">Confirm password</label>
+                    <div class="input-wrap">
+                        <span>♙</span>
+                        <input type="password" id="confirmPassword"
+                               placeholder="Re-enter your password"
+                               autocomplete="new-password" required>
+                        <button type="button" class="toggle-password"
+                                onclick="togglePassword('confirmPassword', this)">
+                            Show
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">
+                    Create Account &nbsp; →
+                </button>
+
+                <div id="statusMessage" class="status-message"
+                     role="alert" aria-live="polite"></div>
+            </form>
+
+            <p class="login-link">
+                Already have an account?
+                <a href="login.html">Sign in</a>
+            </p>
+
+            <a href="index.html" class="home-link">
+                ← Back to home
+            </a>
+        </section>
+
+    </main>
+
+    <script>
+        function togglePassword(id, button) {
+            const input = document.getElementById(id);
+
+            if (input.type === "password") {
+                input.type = "text";
+                button.textContent = "Hide";
+            } else {
+                input.type = "password";
+                button.textContent = "Show";
+            }
+        }
+
+        const registerForm = document.getElementById("registerForm");
+        const statusMessage = document.getElementById("statusMessage");
+
+        registerForm.addEventListener("submit", function(event) {
+            const password = document.getElementById("password").value;
+            const confirmPassword =
+                document.getElementById("confirmPassword").value;
+
+            statusMessage.className = "status-message";
+            statusMessage.textContent = "";
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                statusMessage.textContent = "Passwords do not match. Please try again.";
+                statusMessage.className = "status-message error";
+                document.getElementById("confirmPassword").focus();
+            }
+        });
+
+        const params = new URLSearchParams(window.location.search);
+        const error = params.get("error");
+
+        const messages = {
+            missing: "Please fill in all required fields.",
+            invalidrole: "Please select a valid account type.",
+            exists: "This email may already be registered.",
+            failed: "Registration failed. Please check the database connection and try again."
+        };
+
+        if (error && messages[error]) {
+            statusMessage.textContent = messages[error];
+            statusMessage.className = "status-message error";
+        }
+    </script>
+</body>
+</html>
+```

@@ -3,6 +3,9 @@ import jakarta.servlet.*;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import dao.AppointmentDAO;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeParseException;
 
 @WebServlet("/appointment")
 public class AppointmentServlet extends HttpServlet {
@@ -12,21 +15,38 @@ public class AppointmentServlet extends HttpServlet {
             HttpServletResponse response)
             throws ServletException, IOException {
 
-        int patientId =
-            Integer.parseInt(
-                request.getParameter("patientId")
-            );
+        request.setCharacterEncoding("UTF-8");
+        String contextPath = request.getContextPath();
+        String doctorValue = request.getParameter("doctorId");
+        String date = request.getParameter("date");
+        String time = request.getParameter("time");
 
-        int doctorId =
-            Integer.parseInt(
-                request.getParameter("doctorId")
-            );
+        HttpSession session = request.getSession(false);
+        if (session == null || !"patient".equals(session.getAttribute("userRole"))
+                || !(session.getAttribute("userId") instanceof Integer)) {
+            response.sendRedirect(contextPath + "/login.html?error=loginrequired");
+            return;
+        }
+        int patientId = (Integer) session.getAttribute("userId");
+        int doctorId;
+        try {
+            doctorId = Integer.parseInt(doctorValue);
+            LocalDate appointmentDate = LocalDate.parse(date);
+            LocalTime.parse(time);
+            if (appointmentDate.isBefore(LocalDate.now())) {
+                response.sendRedirect(contextPath + "/appointment.html?error=invalid");
+                return;
+            }
+        } catch (NumberFormatException | NullPointerException | DateTimeParseException e) {
+            response.sendRedirect(contextPath + "/appointment.html?error=invalid");
+            return;
+        }
 
-        String date =
-            request.getParameter("date");
-
-        String time =
-            request.getParameter("time");
+        if (doctorId <= 0 || date == null || date.isBlank()
+                || time == null || time.isBlank()) {
+            response.sendRedirect(contextPath + "/appointment.html?error=missing");
+            return;
+        }
 
 
         AppointmentDAO dao =
@@ -43,15 +63,14 @@ public class AppointmentServlet extends HttpServlet {
 
 
         if (success) {
-
             response.sendRedirect(
-                "patient-dashboard.html"
+                contextPath + "/my-appointments?booked=success"
             );
 
         } else {
 
             response.sendRedirect(
-                "book-appointment.html?error=failed"
+                contextPath + "/appointment.html?error=failed"
             );
         }
     }

@@ -246,32 +246,14 @@
                 Login to your healthcare dashboard
             </p>
 
-            <div class="role-buttons">
-
-                <button class="role-btn active"
-                    onclick="selectRole('Patient', this)">
-                    Patient
-                </button>
-
-                <button class="role-btn"
-                    onclick="selectRole('Doctor', this)">
-                    Doctor
-                </button>
-
-                <button class="role-btn"
-                    onclick="selectRole('Admin', this)">
-                    Admin
-                </button>
-
-            </div>
-
-            <form onsubmit="login(event)">
+            <form action="login" method="post">
 
                 <label>Email Address</label>
 
                 <input
                     type="email"
                     id="email"
+                    name="email"
                     placeholder="Enter your email"
                     required
                 >
@@ -281,6 +263,7 @@
                 <input
                     type="password"
                     id="password"
+                    name="password"
                     placeholder="Enter your password"
                     required
                 >
@@ -303,32 +286,15 @@
 
     <script>
 
-        let selectedRole = "Patient";
-
-        function selectRole(role, button) {
-
-            selectedRole = role;
-
-            document.querySelectorAll(".role-btn")
-                .forEach(btn => btn.classList.remove("active"));
-
-            button.classList.add("active");
-
+        const error = new URLSearchParams(window.location.search).get("error");
+        const messages = {
+            missing: "Enter your email and password.",
+            invalidlogin: "Email or password is incorrect.",
+            invalidrole: "This account has an unsupported role."
+        };
+        if (error && messages[error.toLowerCase()]) {
             document.getElementById("message").textContent =
-                "Selected role: " + role;
-
-        }
-
-        function login(event) {
-
-            event.preventDefault();
-
-            const email = document.getElementById("email").value;
-
-            document.getElementById("message").textContent =
-                "Demo login selected for " + selectedRole +
-                ". Backend connection will be added next.";
-
+                messages[error.toLowerCase()];
         }
 
     </script>

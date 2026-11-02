@@ -4,13 +4,13 @@ CREATE TABLE users (
     id INT PRIMARY KEY AUTO_INCREMENT,
     name VARCHAR(100),
     email VARCHAR(100) UNIQUE,
-    password VARCHAR(100),
-    role VARCHAR(20)
+    password VARCHAR(255) NOT NULL,
+    role VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE doctors (
     doctor_id INT PRIMARY KEY,
-    specialization VARCHAR(100),
+    specialization VARCHAR(100) NOT NULL,
     schedule VARCHAR(100),
     FOREIGN KEY (doctor_id) REFERENCES users(id)
 );
@@ -31,6 +31,3 @@ CREATE TABLE appointments (
     FOREIGN KEY (patient_id) REFERENCES patients(patient_id),
     FOREIGN KEY (doctor_id) REFERENCES doctors(doctor_id)
 );
-select * from users;
-select * from doctors;
-select * from appointments;

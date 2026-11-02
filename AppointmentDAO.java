@@ -35,14 +35,9 @@ public class AppointmentDAO {
                 VALUES (?, ?, ?, ?, ?)
                 """;
 
-        try (
-            Connection connection =
-                    DBConnection.getConnection();
-
-            PreparedStatement statement =
-                    connection.prepareStatement(sql)
-        ) {
-
+        try (Connection connection = DBConnection.getConnection()) {
+            if (connection == null) return false;
+            try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, patientId);
             statement.setInt(2, doctorId);
             statement.setString(3, date);
@@ -50,6 +45,7 @@ public class AppointmentDAO {
             statement.setString(5, "Pending");
 
             return statement.executeUpdate() > 0;
+            }
 
         } catch (SQLException e) {
 
