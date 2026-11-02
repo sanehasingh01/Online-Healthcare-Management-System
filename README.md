@@ -6,6 +6,7 @@ A Java Servlet, JDBC, and MySQL web application for patient, doctor, and adminis
 
 - Patient and doctor registration with password hashing and database-backed login.
 - Patient appointment booking, appointment history, and cancellation of pending requests.
+- Transactional booking prevents two active appointments for the same doctor from taking the same date and time.
 - Doctor appointment review, confirmation, completion, and cancellation for assigned appointments.
 - Doctor schedule editing and patient medical-history editing from the signed-in patient's account.
 - Administrator overview for users, doctors, patients, appointment status, and system counts.
@@ -65,7 +66,7 @@ Keep that window open while using the app. Open `http://localhost:8080/Healthcar
 
 ## Run the automated checks
 
-The dependency-free checks cover salted password hashes, valid and invalid credentials, legacy password compatibility, and appointment date/time validation (including past times today). GitHub Actions runs these checks on each push and pull request. To run them locally from the project root:
+The checks cover salted password hashes, valid and invalid credentials, legacy password compatibility, appointment date/time validation (including past times today), role-dashboard access rules, and MySQL-backed booking collision behavior. GitHub Actions compiles the servlet application and runs the unit and disposable-MySQL integration checks on each push and pull request. To run the dependency-free checks locally from the project root:
 
 ```powershell
 $build = Join-Path (Get-Location) ".build\test-classes"
@@ -76,7 +77,7 @@ java -cp $build tests.AppointmentTimeValidatorTest
 java -cp $build tests.DashboardAccessPolicyTest
 ```
 
-The application also needs a live MySQL and Tomcat environment for end-to-end checks. The verified checks and remaining demo steps are recorded in [docs/TESTING.md](docs/TESTING.md). Database workflows are manual and are not represented as an automated integration suite.
+GitHub Actions also runs a MySQL-backed DAO integration check for duplicate and concurrent appointment bookings. Full browser workflows still need a live Tomcat/MySQL demo. The verified checks and remaining demo steps are recorded in [docs/TESTING.md](docs/TESTING.md).
 
 ## Create the first administrator
 

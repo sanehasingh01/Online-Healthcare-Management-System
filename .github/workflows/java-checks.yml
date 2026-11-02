@@ -5,15 +5,40 @@ on:
   pull_request:
 
 jobs:
-  utility-tests:
+  application-and-tests:
     runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.4
+        env:
+          MYSQL_ROOT_PASSWORD: healthcare-test-password
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h 127.0.0.1 -uroot -p$MYSQL_ROOT_PASSWORD"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=10
+    env:
+      HC_DB_URL: jdbc:mysql://127.0.0.1:3306/healthcare_db
+      HC_DB_USER: root
+      HC_DB_PASSWORD: healthcare-test-password
+      MYSQL_ROOT_PASSWORD: healthcare-test-password
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: '17'
-      - name: Compile utility tests
-        run: mkdir -p build/test-classes && javac -encoding UTF-8 -d build/test-classes util/PasswordUtil.java util/AppointmentTimeValidator.java util/DashboardAccessPolicy.java tests/PasswordUtilTest.java tests/AppointmentTimeValidatorTest.java tests/DashboardAccessPolicyTest.java
-      - name: Run utility tests
-        run: java -cp build/test-classes tests.PasswordUtilTest && java -cp build/test-classes tests.AppointmentTimeValidatorTest && java -cp build/test-classes tests.DashboardAccessPolicyTest
+      - name: Download Jakarta Servlet API
+        run: mkdir -p build/lib && curl -fsSL https://repo.maven.apache.org/maven2/jakarta/servlet/jakarta.servlet-api/6.0.0/jakarta.servlet-api-6.0.0.jar -o build/lib/servlet-api.jar
+      - name: Create disposable test schema
+        run: mysql --host=127.0.0.1 --user=root --password="$MYSQL_ROOT_PASSWORD" < jdbc.sql
+      - name: Compile the servlet application
+        run: mkdir -p build/app-classes && javac -encoding UTF-8 -cp "build/lib/servlet-api.jar:lib/mysql-connector-j-26.7.0.jar" -d build/app-classes *.java util/*.java
+      - name: Compile all test classes
+        run: mkdir -p build/test-classes && javac -encoding UTF-8 -cp "build/app-classes:lib/mysql-connector-j-26.7.0.jar" -d build/test-classes tests/*.java
+      - name: Run unit checks
+        run: java -cp "build/app-classes:build/test-classes:lib/mysql-connector-j-26.7.0.jar" tests.PasswordUtilTest && java -cp "build/app-classes:build/test-classes:lib/mysql-connector-j-26.7.0.jar" tests.AppointmentTimeValidatorTest && java -cp "build/app-classes:build/test-classes:lib/mysql-connector-j-26.7.0.jar" tests.DashboardAccessPolicyTest
+      - name: Run appointment booking integration checks
+        run: java -cp "build/app-classes:build/test-classes:lib/mysql-connector-j-26.7.0.jar" tests.AppointmentBookingIntegrationTest

@@ -53,25 +53,14 @@ public class AppointmentServlet extends HttpServlet {
             new AppointmentDAO();
 
 
-        boolean success =
-            dao.bookAppointment(
-                patientId,
-                doctorId,
-                date,
-                time
-            );
-
-
-        if (success) {
-            response.sendRedirect(
-                contextPath + "/my-appointments?booked=success"
-            );
-
+        AppointmentDAO.BookingResult result = dao.bookAppointment(
+                patientId, doctorId, date, time);
+        if (result == AppointmentDAO.BookingResult.BOOKED) {
+            response.sendRedirect(contextPath + "/my-appointments?booked=success");
+        } else if (result == AppointmentDAO.BookingResult.SLOT_TAKEN) {
+            response.sendRedirect(contextPath + "/appointment.html?error=slotTaken");
         } else {
-
-            response.sendRedirect(
-                contextPath + "/appointment.html?error=failed"
-            );
+            response.sendRedirect(contextPath + "/appointment.html?error=failed");
         }
     }
 }

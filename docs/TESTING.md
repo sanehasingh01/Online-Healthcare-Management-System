@@ -14,6 +14,8 @@ This record separates checks already run from workflows that still need a team d
 | Local Tomcat homepage | HTTP 200 | `http://localhost:8081/Healthcare/` |
 | Doctor list endpoint | HTTP 200, JSON | `http://localhost:8081/Healthcare/doctors` returned a valid doctor list from the configured database |
 
+GitHub Actions also runs `AppointmentBookingIntegrationTest` against a disposable MySQL service. It checks first booking, duplicate-slot rejection, reuse after cancellation, and simultaneous requests. Check the latest Actions run for its result; this integration test is not claimed as locally passed here.
+
 ## End-to-end demo still needed
 
 Run these with a test account before submission and confirm the outcome in the browser and Tomcat log:
@@ -21,9 +23,10 @@ Run these with a test account before submission and confirm the outcome in the b
 1. Register a patient, then log in and log out.
 2. Confirm a duplicate email is rejected.
 3. Book a future appointment as a patient and confirm it appears under that patient's appointments.
-4. Log in as the assigned doctor and confirm, complete, or cancel the appointment.
-5. Check that a patient cannot use the doctor appointment update endpoint, and that a doctor cannot update another doctor's appointment.
-6. Open patient history/profile and administrator overview, and confirm the displayed records match the database.
+4. Have two patients request the same doctor's date and time at nearly the same time; confirm only one booking succeeds and the other gets the slot-taken message. Cancel the first pending request and confirm the slot can be booked again.
+5. Log in as the assigned doctor and confirm, complete, or cancel the appointment.
+6. Check that a patient cannot use the doctor appointment update endpoint, and that a doctor cannot update another doctor's appointment.
+7. Open patient history/profile and administrator overview, and confirm the displayed records match the database.
 
 Use test accounts and sample records. Do not record real patient information in screenshots or the repository.
 
