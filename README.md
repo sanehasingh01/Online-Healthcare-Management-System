@@ -42,7 +42,7 @@ $tomcat = "C:\path\to\apache-tomcat-10.1.x"
 $project = (Get-Location).Path
 $build = Join-Path $project ".build\classes"
 $webClasses = Join-Path $tomcat "webapps\Healthcare\WEB-INF\classes"
-New-Item -ItemType Directory -Force $build, $webClasses | Out-Null
+New-Item -ItemType Directory -Force $build, $webClasses, (Join-Path $tomcat "webapps\Healthcare\WEB-INF\lib") | Out-Null
 $sources = @((Get-ChildItem $project -Filter "*.java" -File).FullName) + @((Get-ChildItem (Join-Path $project "util") -Filter "*.java" -File).FullName)
 $classpath = "$tomcat\lib\servlet-api.jar;$project\lib\mysql-connector-j-26.7.0.jar"
 javac -encoding UTF-8 -cp $classpath -d $build $sources
@@ -62,6 +62,19 @@ $env:CATALINA_BASE = $tomcat
 ```
 
 Keep that window open while using the app. Open `http://localhost:8080/Healthcare/` (use your configured Tomcat HTTP port if different).
+
+## Run the automated checks
+
+The password utility has dependency-free checks for salted hashes, valid and invalid passwords, malformed stored hashes, and compatibility with existing plain-text rows. From the project root, run:
+
+```powershell
+$build = Join-Path (Get-Location) ".build\classes"
+New-Item -ItemType Directory -Force $build | Out-Null
+javac -encoding UTF-8 -cp $build -d $build util\PasswordUtil.java tests\PasswordUtilTest.java
+java -cp $build tests.PasswordUtilTest
+```
+
+The application also needs a live MySQL and Tomcat environment for end-to-end checks. After deployment, verify patient and doctor registration, duplicate-email rejection, login and role-specific pages, appointment booking, and doctor appointment updates. Check the Tomcat console/logs if any workflow fails; this checklist is manual and is not represented as an automated database integration suite.
 
 ## Create the first administrator
 
@@ -84,9 +97,10 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 .
 ├── *.html                  Responsive web pages
 ├── *.java                  Servlet routes and setup utility
-├── UserDAO.java            User registration and authentication queries
-├── AppointmentDAO.java     Appointment writes and status changes
+├── UserDAO.java            dao.UserDAO registration and authentication queries
+├── AppointmentDAO.java     dao.AppointmentDAO appointment writes and status changes
 ├── util/                   Database connection and password hashing
+├── tests/                  Dependency-free password utility checks
 ├── WEB-INF/web.xml         Web application descriptor
 ├── lib/                    MySQL Connector/J
 ├── jdbc.sql                Database schema
