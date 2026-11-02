@@ -98,8 +98,8 @@ The password is stored as a PBKDF2 hash. The setup utility refuses to overwrite 
 - Saneha Singh
 - Anshul Kumar
 - Ankit Kumar
+- Prashant Jaiswal
 
 ## Project presentation
 
 The project review presentation is available at [docs/Healthcare-Management-Project-Review.pptx](docs/Healthcare-Management-Project-Review.pptx).
-- Prashant Jaiswal
