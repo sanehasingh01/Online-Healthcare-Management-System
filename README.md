@@ -68,7 +68,7 @@ Keep that window open while using the app. Open `http://localhost:8080/Healthcar
 The dependency-free checks cover salted password hashes, valid and invalid credentials, legacy password compatibility, and appointment date/time validation (including past times today). GitHub Actions runs these checks on each push and pull request. To run them locally from the project root:
 
 ```powershell
-$build = Join-Path (Get-Location) ".build\classes"
+$build = Join-Path (Get-Location) ".build\test-classes"
 New-Item -ItemType Directory -Force $build | Out-Null
 javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java util\DashboardAccessPolicy.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java tests\DashboardAccessPolicyTest.java
 java -cp $build tests.PasswordUtilTest

@@ -32,7 +32,7 @@ Use test accounts and sample records. Do not record real patient information in 
 From the repository root in PowerShell:
 
 ```powershell
-$build = Join-Path (Get-Location) ".build\classes"
+$build = Join-Path (Get-Location) ".build\test-classes"
 New-Item -ItemType Directory -Force $build | Out-Null
 javac -encoding UTF-8 -d $build util\PasswordUtil.java util\AppointmentTimeValidator.java util\DashboardAccessPolicy.java tests\PasswordUtilTest.java tests\AppointmentTimeValidatorTest.java tests\DashboardAccessPolicyTest.java
 java -cp $build tests.PasswordUtilTest
